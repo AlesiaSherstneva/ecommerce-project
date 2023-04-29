@@ -4,7 +4,6 @@
 /02-backend/spring-boot-ecommerce.iml
 /02-backend/mvnw*
 /02-backend/target
-/03-frontend/angular-ecommerce/.vscode
 /03-frontend/angular-ecommerce/node_modules
 01-starter-files/.DS_Store
 01-starter-files/angular-image-assets/.DS_Store
