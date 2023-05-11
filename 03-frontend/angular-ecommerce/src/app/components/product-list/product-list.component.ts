@@ -76,12 +76,6 @@ export class ProductListComponent implements OnInit {
       .subscribe(this.processResult());
   }
 
-  updatePageSize(pageSize: string) {
-    this.thePageSize = +pageSize;
-    this.thePageNumber = 1;
-    this.listProducts();
-  }
-
   processResult() {
     return (data: any) => {
       this.products = data._embedded.products;
@@ -89,5 +83,15 @@ export class ProductListComponent implements OnInit {
       this.thePageSize = data.page.size;
       this.theTotalElements = data.page.totalElements;
     };
+  }
+
+  updatePageSize(pageSize: string) {
+    this.thePageSize = +pageSize;
+    this.thePageNumber = 1;
+    this.listProducts();
+  }
+
+  addToCart(theProduct: Product) {
+    console.log(`Adding to cart: ${theProduct.name}, ${theProduct.unitPrice}`);
   }
 }
