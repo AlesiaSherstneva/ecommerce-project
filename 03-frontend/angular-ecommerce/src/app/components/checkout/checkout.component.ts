@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { CartService } from 'src/app/services/cart.service';
+import { CheckoutService } from 'src/app/services/checkout.service';
 import { Luv2shopformService } from 'src/app/services/luv2shopform.service';
 import { Luv2shopValidators } from 'src/app/validators/luv2shop-validators';
 
@@ -26,7 +28,9 @@ export class CheckoutComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private luv2shopFormService: Luv2shopformService,
-    private cartService: CartService) { };
+    private cartService: CartService,
+    private checkoutService: CheckoutService,
+    private router: Router) { };
 
   ngOnInit(): void {
     this.reviewCartDetails();
@@ -133,13 +137,10 @@ export class CheckoutComponent implements OnInit {
 
     if (this.checkoutFormGroup.invalid) {
       this.checkoutFormGroup.markAllAsTouched();
+      return;
     }
 
-    console.log(this.checkoutFormGroup.get('customer').value);
-    console.log("The email address is " + this.checkoutFormGroup.get('customer').value.email);
-
-    console.log("The shipping address country is " + this.checkoutFormGroup.get('shippingAddress').value.country.name);
-    console.log("The shipping address state is " + this.checkoutFormGroup.get('shippingAddress').value.state.name);
+    
   }
 
   handleMonthAndYears() {
