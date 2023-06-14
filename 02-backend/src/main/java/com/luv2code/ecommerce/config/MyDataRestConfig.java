@@ -7,6 +7,7 @@ import com.luv2code.ecommerce.entities.ProductCategory;
 import javax.persistence.metamodel.EntityType;
 
 import com.luv2code.ecommerce.entities.State;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -25,6 +26,9 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Value("${allowed.origins}")
+    private String[] theAllowedOrigins;
+
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         HttpMethod[] theUnsupportedActions = {HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE};
@@ -35,6 +39,8 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
         disableHttpMethods(State.class, config, theUnsupportedActions);
 
         exposeIds(config);
+
+        cors.addMapping(config.getBasePath() + "/**").allowedOrigins(theAllowedOrigins);
     }
 
     private void disableHttpMethods(Class theClass, RepositoryRestConfiguration config, HttpMethod[] theUnsupportedActions) {
