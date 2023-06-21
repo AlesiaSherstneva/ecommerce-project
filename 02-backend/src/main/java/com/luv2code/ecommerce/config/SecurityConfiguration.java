@@ -24,6 +24,8 @@ public class SecurityConfiguration {
         http.setSharedObject(ContentNegotiationStrategy.class, new HeaderContentNegotiationStrategy());
         Okta.configureResourceServer401ResponseBody(http);
 
+        http.csrf().disable();
+
         return http.build();
     }
 }
