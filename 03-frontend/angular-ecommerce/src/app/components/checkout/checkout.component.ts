@@ -38,6 +38,8 @@ export class CheckoutComponent implements OnInit {
   cardElement: any;
   displayError: any = "";
 
+  isDisabled: boolean = false;
+
   constructor(private formBuilder: FormBuilder,
     private luv2shopFormService: Luv2shopformService,
     private cartService: CartService,
@@ -180,6 +182,8 @@ export class CheckoutComponent implements OnInit {
     this.paymentInfo.currency = "USD";
 
     if (!this.checkoutFormGroup.invalid && this.displayError.textContent === "") {
+      this.isDisabled = true;
+
       this.checkoutService.createPaymentIntent(this.paymentInfo).subscribe(
         (paymentIntentResponse) => {
           this.stripe.confirmCardPayment(paymentIntentResponse.client_secret,
@@ -202,14 +206,17 @@ export class CheckoutComponent implements OnInit {
             .then((result: any) => {
               if (result.error) {
                 alert(`There was an error: ${result.error.message}`);
+                this.isDisabled = false;
               } else {
                 this.checkoutService.placeOrder(purchase).subscribe({
                   next: (response: any) => {
                     alert(`Your order has been received.\nOrder tracking number: ${response.orderTrackingNumber}`);
-                    this.resetCart()
+                    this.resetCart();
+                    this.isDisabled = false;
                   },
                   error: (error: any) => {
                     alert(`There was an error: ${error.message}`);
+                    this.isDisabled = false;
                   }
                 })
               }
